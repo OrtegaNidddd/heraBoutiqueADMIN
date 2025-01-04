@@ -11,40 +11,75 @@
 <body>
     <header id="nav">
         <h1>CLIENTES</h1>
+        <button onclick="inicio()" class="backButton">Volver</button>
+        
     </header>
     <main>
         <div id="buttons">
-            <button onclick="actualizar()" class="primaryButton">ACTUALIZAR</button>
-            <button onclick="volver()" class="primaryButton">VOLVER</button>
+            <button onclick="actualizar()" class="primaryButton">Actualizar lista</button>
+            <button onclick="actualizar()" class="primaryButton">Borrar filtros</button>
         </div>
+        <!-- Formulario de búsqueda y filtros -->
+        <form method="GET" action="/verClientes" id="filterContainer">
+            <input class="filter" type="text" name="search" placeholder="Buscar por nombre o cedula" value="<%= search %>" />
+            <select name="filter" class="filter">
+                <option value="">Filtrar por ciudad</option>
+                <option value="cucuta" <%= filter === "cucuta" ? "selected" : "" %>>Cúcuta</option>
+                <option value="barranquilla" <%= filter === "barranquilla" ? "selected" : "" %>>Barranquilla</option>
+                <option value="bogota" <%= filter === "bogota" ? "selected" : "" %>>Bogotá</option>
+                <option value="bucaramanga" <%= filter === "bucaramanga" ? "selected" : "" %>>Bucaramanga</option>
+                <option value="cali" <%= filter === "cali" ? "selected" : "" %>>Cali</option>
+                <option value="cartagena" <%= filter === "cartagena" ? "selected" : "" %>>Cartagena</option>
+                <option value="medellin" <%= filter === "medellin" ? "selected" : "" %>>Medellín</option>
+                <option value="villavicencio" <%= filter === "villavicencio" ? "selected" : "" %>>Villavicencio</option>
+            </select>
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+
+        <!-- Tabla de clientes -->
         <table border="1">
             <thead>
-                <th>ID</th>
-                <th>NOMBRES</th>
-                <th>APELLIDOS</th>
-                <th>TELEFONO</th>
-                <th>EMAIL</th>
-                <th>CIUDAD</th>
-                <th>GENERO</th>
-                <th>CUMPLEAÑOS</th>
-                <th>CEDULA</th>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombres</th>
+                    <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Email</th>
+                    <th>Ciudad</th>
+                    <th>Género</th>
+                    <th>Cumpleaños</th>
+                    <th>Cédula</th>
+                </tr>
             </thead>
             <tbody>
-                <% resultado.forEach((cliente) => { %>
+                <% if (resultado.length > 0) { %>
+                    <% resultado.forEach((cliente) => { %>
+                        <tr>
+                            <td><%= cliente.idcliente %></td>
+                            <td><%= cliente.nombres %></td>
+                            <td><%= cliente.apellidos %></td>
+                            <td><%= cliente.telefono %></td>
+                            <td><%= cliente.email %></td>
+                            <td><%= cliente.ciudad %></td>
+                            <td><%= cliente.genero %></td>
+                            <td><%= cliente.cumpleanos %></td>
+                            <td><%= cliente.cedula %></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
                     <tr>
-                        <td><%= cliente.idcliente %></td>
-                        <td><%= cliente.nombres %></td>
-                        <td><%= cliente.apellidos %></td>
-                        <td><%= cliente.telefono %></td>
-                        <td><%= cliente.email %></td>
-                        <td><%= cliente.ciudad %></td>
-                        <td><%= cliente.genero %></td>
-                        <td><%= cliente.cumpleanos %></td>
-                        <td><%= cliente.cedula %></td>
+                        <td colspan="9">No hay clientes disponibles.</td>
                     </tr>
-                <% }) %>
+                <% } %>
             </tbody>
         </table>
+
+        <!-- Paginación -->
+        <div id="containerPaginacion">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="/verClientes?page=<%= i %>&limit=<%= limit %>&search=<%= search %>&filter=<%= filter %>" id="numberPaginacion"><%= i %></a>
+            <% } %>
+        </div>
     </main>
     <script src="../js/script.js"></script>
 </body>

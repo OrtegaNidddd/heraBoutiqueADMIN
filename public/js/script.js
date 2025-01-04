@@ -5,3 +5,7 @@ function actualizar(){
 function volver(){
     window.history.go(-1)
 }
+
+function inicio(){
+    window.location.href = "/";
+}

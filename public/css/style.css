@@ -46,9 +46,71 @@ body{
     '950': '#262c40',
 },*/
 
+.primaryButton{
+    display: block;
+    cursor: pointer;
+    width: 10rem;
+    margin: 1rem auto;
+    padding: .5rem;
+    border-radius: 25px;
+    border: 1px solid #414e6e;
+    color: #414e6e;
+    font-size: 16px;
+    font-family: "Poppins";
+    background-color: var(--bg-color);
+    transition: all .3s ease-in-out;
+}
+
+.primaryButton:hover{
+    background-color: #414e6e;
+    color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
+.secondaryButton{
+    cursor: pointer;
+    width: 10rem;
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: 25px;
+    border: 1px solid var(--bg-color);
+    color: var(--bg-color);
+    font-size: 16px;
+    font-family: "Poppins";
+    background: none;
+    transition: all .3s ease-in-out;
+}
+
+.secondaryButton:hover{
+    border-color: #414e6e;
+    color: #414e6e;
+}
+
+.backButton{
+    display: block;
+    cursor: pointer;
+    width: 8rem;
+    margin: 1rem 1rem 1rem auto;
+    padding: .5rem;
+    border-radius: 25px;
+    border: 1px solid #414e6e;
+    color: #414e6e;
+    font-size: 16px;
+    font-family: "Poppins";
+    background-color: var(--bg-color);
+    transition: all .3s ease-in-out;
+}
+
+.backButton:hover{
+    background-color: #414e6e;
+    color: var(--bg-color);
+    border-color: var(--bg-color);
+}
+
 #nav h1{
     color: var(--text-white);
     letter-spacing: 10px;
+    margin: 20%;
 }
 
 #nav{
@@ -128,43 +190,4 @@ body{
 
 i{
     font-size: 40px;
-}
-
-.primaryButton{
-    cursor: pointer;
-    width: 8rem;
-    margin: 1rem;
-    padding: .5rem;
-    border-radius: 25px;
-    border: 1px solid #414e6e;
-    color: #414e6e;
-    font-size: 16px;
-    font-family: "Poppins";
-    background-color: var(--bg-color);
-    transition: all .3s ease-in-out;
-}
-
-.primaryButton:hover{
-    background-color: #414e6e;
-    color: var(--bg-color);
-    border-color: var(--bg-color);
-}
-
-.secondaryButton{
-    cursor: pointer;
-    width: 10rem;
-    margin: 1rem;
-    padding: 1rem;
-    border-radius: 25px;
-    border: 1px solid var(--bg-color);
-    color: var(--bg-color);
-    font-size: 16px;
-    font-family: "Poppins";
-    background: none;
-    transition: all .3s ease-in-out;
-}
-
-.secondaryButton:hover{
-    border-color: #414e6e;
-    color: #414e6e;
 }

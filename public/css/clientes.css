@@ -1,3 +1,7 @@
+body{
+    height: 100vh;
+}
+
 :root{
     --title-primary-color: #471023;
     --bg-button-primary-color: #f83c86;
@@ -12,6 +16,13 @@
     --bg-color: #f9eaf2;
 }
 
+#buttons{
+    margin-top: -1rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
 main{
     display: flex;
     flex-direction: column;
@@ -21,12 +32,12 @@ main{
 
 table{
     border: 1px solid var(--text-white);
-    background-color: #414e6e;
+    background-color: #394b7e;
     border-collapse: collapse;
 }
 
 th, td{
-    padding: .5rem;
+    padding: .3rem;
     color: var(--text-white);
     text-align: center;
 }
@@ -34,4 +45,74 @@ th, td{
 th{
     letter-spacing: .5px;
     font-weight: 500;
+}
+
+.filter{
+    width: 100%;
+    height: 2.2rem;
+    padding: .5rem;
+    border: none;
+    color: #394b7e;
+    font-size: auto;
+    background-color: var(--bg-color);
+}
+
+.filter:focus{
+    outline: 2px solid #394b7e;
+}
+
+#filterContainer{
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem 0 1rem 0;
+}
+
+i{
+    font-size: 1.3rem;
+    color: #394b7e;
+}
+
+#filterContainer select{
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+#filterContainer button{
+    cursor: pointer;
+    height: 100%;
+    width: 10%;
+    padding: .5rem;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#containerPaginacion{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 10%;
+    margin: 1rem auto;
+}
+
+#numberPaginacion{
+    cursor: pointer;
+    height: 50%;
+    padding: .5rem;
+    width: 30%;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: none;
+    background-color: var(--bg-color);
+    color: #394b7e;
 }

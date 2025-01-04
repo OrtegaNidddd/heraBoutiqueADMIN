@@ -33,7 +33,7 @@ app.get("/", function(req, res){
 });
 
 app.get("/registro", function(req, res){
-    res.render("form-registro");
+    res.render("formRegistro");
 });
 
 // Crud de clientes::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -42,17 +42,96 @@ app.get("/registro", function(req, res){
 let crud_cliente =({});
 
 crud_cliente.leer = (req, res) => {
-    conexion.query(
-        'SELECT idcliente,nombres,apellidos,telefono,email,ciudad,genero,date_format(cumpleanos,"%d-%m-%Y") AS cumpleanos, cedula FROM clientes;',
-        (error, results) => {
+    const { page = 1, limit = 10, search = "", filter = "" } = req.query; // Obtener parámetros de consulta
+    const offset = (page - 1) * limit;
+
+    let query = `SELECT idcliente, nombres, apellidos, telefono, email, ciudad, genero, DATE_FORMAT(cumpleanos, "%d-%m-%Y") AS cumpleanos, cedula FROM clientes`;
+    let queryParams = [];
+
+    // Filtro por búsqueda (nombres o cedula)
+    if (search) {
+        query += ` WHERE nombres LIKE ? OR cedula LIKE ?`;
+        queryParams.push(`%${search}%`, `%${search}%`);
+    }
+
+    // Filtro adicional (ciudad)
+    if (filter) {
+        query += search ? ` AND ciudad = ?` : ` WHERE ciudad = ?`;
+        queryParams.push(filter);
+    }
+
+    // Agregar paginación
+    query += ` LIMIT ? OFFSET ?`;
+    queryParams.push(parseInt(limit), parseInt(offset));
+
+    // Contar total de clientes (sin paginación)
+    const countQuery = `SELECT COUNT(*) AS total FROM clientes`;
+
+    conexion.query(countQuery, [], (countError, countResults) => {
+        if (countError) {
+            throw countError;
+        }
+
+        const total = countResults[0].total;
+
+        conexion.query(query, queryParams, (error, results) => {
             if (error) {
                 throw error;
             } else {
-                res.render('clientes', { resultado: results });
+                res.render("clientes", {
+                    resultado: results,
+                    total,
+                    currentPage: parseInt(page),
+                    totalPages: Math.ceil(total / limit),
+                    limit: parseInt(limit),
+                    search,
+                    filter,
+                });
+            }
+        });
+    });
+};
+
+//Registro de Clientes::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+app.post("/validar", function(req, res){
+    const datos = req.body;
+
+    let nombres = datos.nombres;
+    let apellidos = datos.apellidos;
+    let email = datos.email;
+    let telefono = datos.telefono;
+    let cedula = datos.cedula;
+    let ciudad = datos.ciudad;
+    let genero = datos.genero;
+    let cumpleanos = datos.cumpleanos;
+
+    let mensaje;    
+    let buscar = "SELECT * FROM clientes WHERE cedula = '" + cedula + "'";
+    let success;
+
+    conexion.query(buscar, function(err, resultado){
+        if(err){
+            mensaje = "Error: No se pudo conectar a la base de datos";
+            res.render("formRegistro.ejs", {mensaje});
+        }else{
+            if(resultado.length > 0){
+                mensaje = "Error: La cédula ya está registrada";
+                res.render("formRegistro.ejs", {mensaje});
+            }else{
+                let registrar = "INSERT INTO clientes (nombres, apellidos, telefono, email, ciudad, genero, cumpleanos, cedula) VALUES (' " + nombres + "', '" + apellidos + "', '" + telefono + "', '" + email + "', '" + ciudad + "', '" + genero + "', '" + cumpleanos + "', '" + cedula + "')";
+                conexion.query(registrar, function(err){
+                    if(err){
+                        mensaje = "Error: No se pudo registrar el cliente";
+                        res.render("formRegistro.ejs", {mensaje});
+                    }else{
+                        success = "Datos registrados exitosamente";
+                        res.render("formRegistro.ejs", {success});
+                    }
+                });
             }
         }
-    );
-};
+    });
+});
 
 app.get("/verClientes", crud_cliente.leer);
 
