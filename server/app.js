@@ -28,12 +28,19 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
+//Ruta de Inicio::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 app.get("/", function(req, res){
     res.render("index");
 });
 
+//Ruta de Registro de Clientes:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 app.get("/registro", function(req, res){
     res.render("formRegistro");
+});
+
+//Ruta de Registro de Productos:::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+app.get("/registro-productos", function(req, res){
+    res.render("registro-productos");
 });
 
 // Crud de clientes::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -45,7 +52,7 @@ crud_cliente.leer = (req, res) => {
     const { page = 1, limit = 10, search = "", filter = "" } = req.query; // Obtener parámetros de consulta
     const offset = (page - 1) * limit;
 
-    let query = `SELECT idcliente, nombres, apellidos, telefono, email, ciudad, genero, DATE_FORMAT(cumpleanos, "%d-%m-%Y") AS cumpleanos, cedula FROM clientes`;
+    let query = `SELECT idcliente, nombres, apellidos, telefono, email, ciudad, genero, DATE_FORMAT(cumpleanos, "%d-%m-%Y") AS cumpleanos, cedula FROM hera_boutique.clientes`;
     let queryParams = [];
 
     // Filtro por búsqueda (nombres o cedula)
@@ -65,7 +72,7 @@ crud_cliente.leer = (req, res) => {
     queryParams.push(parseInt(limit), parseInt(offset));
 
     // Contar total de clientes (sin paginación)
-    const countQuery = `SELECT COUNT(*) AS total FROM clientes`;
+    const countQuery = `SELECT COUNT(*) AS total FROM hera_boutique.clientes`;
 
     conexion.query(countQuery, [], (countError, countResults) => {
         if (countError) {
@@ -92,6 +99,9 @@ crud_cliente.leer = (req, res) => {
     });
 };
 
+//Ruta de Ver listado de clientes::::::::::::::::::::::::::::::::::::::::::::::::::::::
+app.get("/verClientes", crud_cliente.leer);
+
 //Registro de Clientes::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 app.post("/validar", function(req, res){
     const datos = req.body;
@@ -106,7 +116,7 @@ app.post("/validar", function(req, res){
     let cumpleanos = datos.cumpleanos;
 
     let mensaje;    
-    let buscar = "SELECT * FROM clientes WHERE cedula = '" + cedula + "'";
+    let buscar = "SELECT * FROM hera_boutique.clientes WHERE cedula = '" + cedula + "'";
     let success;
 
     conexion.query(buscar, function(err, resultado){
@@ -118,7 +128,7 @@ app.post("/validar", function(req, res){
                 mensaje = "Error: La cédula ya está registrada";
                 res.render("formRegistro.ejs", {mensaje});
             }else{
-                let registrar = "INSERT INTO clientes (nombres, apellidos, telefono, email, ciudad, genero, cumpleanos, cedula) VALUES (' " + nombres + "', '" + apellidos + "', '" + telefono + "', '" + email + "', '" + ciudad + "', '" + genero + "', '" + cumpleanos + "', '" + cedula + "')";
+                let registrar = "INSERT INTO hera_boutique.clientes (nombres, apellidos, telefono, email, ciudad, genero, cumpleanos, cedula) VALUES (' " + nombres + "', '" + apellidos + "', '" + telefono + "', '" + email + "', '" + ciudad + "', '" + genero + "', '" + cumpleanos + "', '" + cedula + "')";
                 conexion.query(registrar, function(err){
                     if(err){
                         mensaje = "Error: No se pudo registrar el cliente";
@@ -133,7 +143,42 @@ app.post("/validar", function(req, res){
     });
 });
 
-app.get("/verClientes", crud_cliente.leer);
+
+//Registro de Productos::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+app.post("/registrar_producto", function(req, res){
+    const datosProducto = req.body;
+
+    let nombreProducto = datosProducto.nombreProducto;
+    let precioProducto = datosProducto.precioProducto;
+    let stock_actual = datosProducto.stockProducto;
+
+    let mensajeProducto;
+    let buscarProducto = "SELECT * FROM hera_boutique.productos WHERE nombre = '" + nombreProducto + "'";
+    let successProducto;
+
+    conexion.query(buscarProducto, function(err, resultado){
+        if(err){
+            mensajeProducto = "Error: No se pudo conectar a la base de datos";
+            res.render("registro-productos.ejs", {mensajeProducto});
+        }else{
+            if(resultado.length > 0){
+                mensajeProducto = "Error: El producto ya está registrado";
+                res.render("registro-productos.ejs", {mensajeProducto});
+            }else{
+                let registrarProducto = "INSERT INTO hera_boutique.productos (nombre, precio, stock_actual) VALUES (' " + nombreProducto + "', '" + precioProducto + "', '" + stock_actual + "')";
+                conexion.query(registrarProducto, function(err){
+                    if(err){
+                        mensajeProducto = "Error: No se pudo registrar el producto";
+                        res.render("registro-productos.ejs", {mensajeProducto});
+                    }else{
+                        successProducto = "Datos registrados exitosamente";
+                        res.render("registro-productos.ejs", {successProducto});
+                    }
+                });
+            }
+        }
+    });
+});
 
 //Ruta de Archivos Estaticos::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
