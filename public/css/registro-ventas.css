@@ -1,0 +1,59 @@
+body {
+    height: 100vh;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#registroVentas{
+    margin: 2rem 0 2rem 0;
+    width: 60%;
+    height: auto;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 25px;
+    background-color: var(--bg-color);
+}
+
+.producto-item{
+    display: flex;
+    flex-direction: space-around;
+    align-items: center;
+    gap: 5px;
+    height: 70%;
+    margin: 5px 0px;
+}
+
+select{
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    color: #323e5a;
+    border: 1px solid #323e5a;
+    background: none;
+    padding: 5px;
+}
+
+input{
+    border: 1px solid #323e5a;
+    background: none;
+    width: 100%;
+    height: 45px;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: "Poppins";
+}
+
+input:focus{
+    outline: #36508d 2px solid;
+}
+
+#buttons{
+    display: flex;
+    gap: 5px;
+    margin: 5px 0px;
+}

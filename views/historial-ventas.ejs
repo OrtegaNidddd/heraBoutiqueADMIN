@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hera Admin</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/inventario.css">
+    <script src="https://kit.fontawesome.com/a1ddf57449.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header id="nav">
+        <h1>HISTORIAL DE VENTAS</h1>
+        <button onclick="inicio()" class="backButton">Volver</button>
+        
+    </header>
+    <main>
+        <div id="buttons">
+            <button onclick="actualizarVentas()" class="primaryButton">Actualizar</button>
+            <button onclick="actualizarVentas()" class="secondaryButton">Borrar filtros</button>
+        </div>
+        <!-- Formulario de búsqueda y filtros -->
+        <form method="GET" action="/historial-ventas" id="filterContainer">
+
+            <input class="filter" type="date" name="search" placeholder="Buscar por fecha" value="<%= search %>" />
+
+            <button type="submit" id="filterButton">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </form>
+        
+        <!-- Tabla de clientes -->
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID de Venta</th>
+                    <th>Fecha de Venta</th>
+                    <th>ID de Producto Vendido</th>
+                    <th>Cantidad de Producto Vendido</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (resultado.length > 0) { %>
+                    <% resultado.forEach((ventas) => { %>
+                        <tr>
+                            <td><%= ventas.id_venta %></td>
+                            <td><%= ventas.fecha %></td>
+                            <td><%= ventas.id_producto %></td>
+                            <td><%= ventas.cantidad %></td>
+                            <td><%= ventas.total %></td>
+                        </tr>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="9">No hay ventas disponibles.</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <div id="containerPaginacion">
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="/historial-ventas?page=<%= i %>&limit=<%= limit %>&search=<%= search %>&filter=<%= filter %>" id="numberPaginacion"><%= i %></a>
+            <% } %>
+        </div>
+    </main>
+    <script src="../js/script.js"></script>
+</body>
+</html>

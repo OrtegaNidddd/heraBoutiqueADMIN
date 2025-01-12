@@ -2,25 +2,17 @@ body{
     height: 100vh;
 }
 
-:root{
-    --title-primary-color: #471023;
-    --bg-button-primary-color: #f83c86;
-    --bg-button-primary-hover: #b21047;
-    --text-primary-color: #c84579;
-    --text-secondary-color: #e482b0;
-    --text-white: #fff9ee;
-    --bg-secondary-color: #ffcae4;
-    --title-footer-color: #f6d4e5;
-    --text-footer-color: #e482b0;
-    --bg-footer-color: #aa2c5a;
-    --bg-color: #f9eaf2;
+#buttons{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: auto;
+    width: 30%;
 }
 
-#buttons{
-    margin-top: -1rem;
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
+#buttons button{
+    width: 100%;
+    height: 45px;
 }
 
 main{
@@ -43,7 +35,6 @@ th, td{
 }
 
 th{
-    
     letter-spacing: .5px;
     font-weight: 500;
 }
@@ -87,7 +78,7 @@ i{
 #filterContainer button{
     cursor: pointer;
     height: 100%;
-    width: 10%;
+    width: 6%;
     padding: .5rem;
     border: none;
     border-radius: 50%;
