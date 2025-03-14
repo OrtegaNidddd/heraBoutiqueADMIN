@@ -17,7 +17,7 @@ conexion.connect(function(err){
         console.log("Error de conexión: ", err);
     }
     else{
-        console.log("Conexión establecida exitosamente");
+        console.log("Conexión esta blecida exitosamente");
     } 
 });
 
